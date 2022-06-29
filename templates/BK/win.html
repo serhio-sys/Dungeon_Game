@@ -1,0 +1,8 @@
+{% extends 'BK/lose.html' %}
+{% block mes %}
+    <span class='fs-3 text-dark'>You winner and you can continue your adventure.</span>
+{% endblock mes %}
+
+{% block bunts %}
+<a class="btn btn-outline-warning ms-2" href="{% url 'dungeon_go' %}">Continue Adventure</a>
+{% endblock bunts %} 

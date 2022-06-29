@@ -32,8 +32,8 @@ class Newuser(AbstractUser):
     def CheckEXP(self):
         if self.exp>=100:
             self.lvl+=1
-            self.defence=self.defence*(int(self.lvl/2))
-            self.attack=self.attack*(int(self.lvl/2))
+            self.defence=self.defence+1
+            self.attack=self.attack+1
             self.exp=0
             self.save()
         return self.lvl
@@ -59,6 +59,7 @@ class Weapon(models.Model):
     damage = models.IntegerField("DAMAGE+")
     img = models.ImageField("IMG",upload_to="weapon")
     balance = models.IntegerField("SUM")
+    lvl = models.IntegerField("LVL")
 
     def get_absolute_url(self):
         return reverse("buy_w", kwargs={"weapon": self.pk})
@@ -73,6 +74,7 @@ class Armor(models.Model):
     img = models.ImageField("IMG",upload_to="armor")
     armor = models.IntegerField("AROMOR+")
     balance = models.IntegerField("SUM")
+    lvl = models.IntegerField("LVL")
 
     def get_absolute_url(self):
         return reverse("buy_a", kwargs={"armor": self.pk})
@@ -87,6 +89,8 @@ class Enemy(models.Model):
     defence = models.IntegerField("ARMOR",default=1)
     lvl = models.IntegerField("LEVEL",default=1)
     slug = models.SlugField("URL",unique=True)
+    img = models.ImageField("IMG",upload_to="enemy/",default="")
+
     weapon = models.ForeignKey('Weapon',verbose_name="WEAPON",default=None,null=True,blank=True,on_delete=models.SET_NULL)
     armor = models.ForeignKey('Armor',verbose_name="ARMOR",default=None,null=True,blank=True,on_delete=models.SET_NULL)
 

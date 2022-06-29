@@ -53,9 +53,13 @@ def buyweapon(request,weapon):
         if user.weapon==weapon:
             return render(request,'BK/shop_err.html')
         else:
-            user.balance -= weapon.balance
-            user.weapon = weapon
-            user.save()
+            if weapon.lvl<=request.user.lvl:
+                user.balance -= weapon.balance
+                user.weapon = weapon
+                user.save()
+            else:
+                return render(request,'BK/shop_mes.html')
+
     else:
         return render(request,'BK/shop_err.html')
     return redirect('success_b')
@@ -67,9 +71,12 @@ def buyarmor(request,armor):
         if user.armor==armor:
             return render(request,'BK/shop_err.html')
         else:
-            user.balance -= armor.balance
-            user.armor = armor
-            user.save()
+            if armor.lvl<=request.user.lvl:
+                user.balance -= armor.balance
+                user.armor = armor
+                user.save()
+            else:
+                return render(request,'BK/shop_mes.html')
     else:
         return render(request,'BK/shop_err.html')
     return redirect('success_b')
@@ -170,7 +177,7 @@ class Dungeon_Loc3(LoginRequiredMixin,View):
 
 class PayBadGuys(LoginRequiredMixin,View):
     def get(self,request,*args, **kwargs):
-        pay = random.randint(0,100)
+        pay = random.randint(50,100)
         if self.request.user.balance>pay:    
             self.request.user.balance -= pay
             self.request.user.dungeon_loc = 0
@@ -192,7 +199,7 @@ class TakeTreasure(LoginRequiredMixin,View):
                 pay = random.randint(300,500)
             request.user.balance += pay
             request.user.dungeon_loc = 0
-            request.user.health -= damage
+            request.user.health -= damage - (int(request.user.ReturnAllArmor()/2))
             request.user.save()
             return render(request,'BK/success_take.html',context={'price':pay})
         else:
@@ -204,13 +211,14 @@ class Fight(LoginRequiredMixin,UserPassesTestMixin,View):
         form_class = AttackF()
         if request.user.is_fight==False:
             request.user.is_fight = True
-            rnd = random.randint(1,3)
+            allphoto = ['enemy/first.jpg','enemy/second.jpg']
+            rnd = random.randint(0,1)
             if request.user.dungeon_lvl <= 3:
-                enemy = Enemy.objects.create(name="Bad Guy",attack=5,defence=2,lvl=1,slug=request.user.username)
+                enemy = Enemy.objects.create(name="Bad Guy",attack=5,defence=2,lvl=1,img=allphoto[rnd],slug=request.user.username)
             elif request.user.dungeon_lvl > 3 and request.user.dungeon_lvl <= 9:
-                enemy = Enemy.objects.create(name="Bad Guy_2",attack=10,defence=8,lvl=2,slug=request.user.username,weapon=Weapon.objects.get(pk=2),armor=Armor.objects.get(pk=2))
+                enemy = Enemy.objects.create(name="Bad Guy_2",attack=10,defence=8,lvl=2,img=allphoto[rnd],slug=request.user.username,weapon=Weapon.objects.get(pk=2),armor=Armor.objects.get(pk=2))
             elif request.user.dungeon_lvl > 9:
-                enemy = Enemy.objects.create(name="Bad Guy_3",attack=30,defence=25,lvl=3,slug=request.user.username,weapon=Weapon.objects.get(pk=4),armor=Armor.objects.get(pk=4))
+                enemy = Enemy.objects.create(name="Bad Guy_3",attack=30,defence=25,lvl=3,img=allphoto[rnd],slug=request.user.username,weapon=Weapon.objects.get(pk=4),armor=Armor.objects.get(pk=4))
             request.user.enemy = enemy
             request.user.save()
             return render(request,'BK/fight.html',context={'enemy':enemy,'form':form_class})
@@ -220,10 +228,14 @@ class Fight(LoginRequiredMixin,UserPassesTestMixin,View):
                 request.user.dungeon_loc = 0
                 request.user.is_fight = False
                 if enemy.health >= 100:
-                    request.user.dungeon_lvl -= 1
+                    if request.user.dungeon_lvl - 1!=0:
+                        request.user.dungeon_lvl -= 1
+                request.user.balance -= 50
+                if request.user.balance<0:
+                    request.user.balance=0
                 self.request.user.save()          
                 enemy.delete()
-                return redirect('loc1')
+                return render(request,'BK/lose.html')
             elif enemy.health <= 0:
                 request.user.is_fight = False
                 request.user.dungeon_loc = 0
@@ -233,7 +245,7 @@ class Fight(LoginRequiredMixin,UserPassesTestMixin,View):
                     request.user.dungeon_lvl += 1
                 self.request.user.save()
                 enemy.delete()
-                return redirect('dungeon_go')
+                return render(request,'BK/win.html')
             return render(request,'BK/fight.html',context={'enemy':enemy,'form':form_class})
     
     def post(self,request,*args, **kwargs):
@@ -243,21 +255,30 @@ class Fight(LoginRequiredMixin,UserPassesTestMixin,View):
             request.user.dungeon_loc = 0
             request.user.is_fight = False
             if enemy.health >= 100:
+                if request.user.dungeon_lvl - 1!=0:
                     request.user.dungeon_lvl -= 1
+            request.user.balance -= 50
+            if request.user.balance<0:
+                request.user.balance=0
             self.request.user.save()
             enemy.delete()
-            return redirect('loc1')
+            return render(request,'BK/lose.html')
         elif enemy.health <= 0:
             request.user.is_fight = False
             request.user.dungeon_loc = 0
             request.user.exp += random.randint(15,30)
-            request.user.balance += random.randint(20,50)
+            if enemy.lvl == 1:
+                request.user.balance += random.randint(20,50)
+            elif enemy.lvl == 2:
+                request.user.balance += random.randint(120,250)
+            elif enemy.lvl == 2:
+                request.user.balance += random.randint(220,350)
             if request.user.health >= 100:
                 request.user.dungeon_lvl += 1
             self.request.user.save()
             enemy.delete()
-            return redirect('dungeon_go')
-        choic = {0:'head',1:'body',2:'lags'}
+            return render(request,'BK/win.html')
+        choic = {0:'head',1:'body',2:'legs'}
         selat = random.randint(0,2)
         seldef = random.randint(0,2)
         if request.POST['attack'] == choic[seldef]:

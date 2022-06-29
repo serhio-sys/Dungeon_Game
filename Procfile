@@ -1,0 +1,1 @@
+web: gunicorn Bclub.wsgi --log-file

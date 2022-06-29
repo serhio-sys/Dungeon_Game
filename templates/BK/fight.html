@@ -196,7 +196,7 @@
                 <div class="d-flex justify-content-between enemy">
                     <div class="d-flex flex-row-reverse w-100 up">
                         <div class='user_model  d-flex flex-column align-items-between'>
-                            <div class="img_user"><img src="{% static 'img/enemy/enemy.jpg' %}" class="w-100 h-100" /></div>
+                            <div class="img_user"><img src="{{enemy.img.url}}" class="w-100 h-100" /></div>
                             <div class="progress mt-1">
                                 <div class="progress-bar bg_pr" role="progressbar" style="width: {{enemy.health}}%" aria-valuenow="{{enemy.health}}" aria-valuemin="0" aria-valuemax="100">Health: {{enemy.health}}</div>
                         </div>
@@ -232,16 +232,18 @@
             </div>
             <div class="d-flex justify-content-center align-items-center nav"> 
                 {% block bnts %}
-                <form method="POST">
+                <form method="POST" class="d-flex flex-column">
                     {% csrf_token %}
-                    {% for f in form %}
+                    <div>
+                        {% for f in form %}
                     <div class="form-check form-check-inline">
                         <label class="form-check-label" for="{{ f.id_for_label }}">{{f.label}}</label>
                         {{f}}
                         <div class="form-error">{{ f.errors }}</div>
                       </div>
                     {% endfor %}
-                    <button type="submit" class="btn btn-warning">Gooo!</button>
+                    </div>
+                    <button type="submit" class="btn btn-warning mt-2">Gooo!</button>
                 </form>
                 {% endblock bnts %}
             </div>
