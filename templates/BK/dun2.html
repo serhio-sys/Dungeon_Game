@@ -1,0 +1,16 @@
+{% extends 'BK/dun1.html' %}
+{% load static %}
+{% block map %}{% static 'img/locations/dungeon/dun3.png' %}{% endblock map %}
+
+{% block enter %}
+<div class="text-center">You found treasure! You can take up or go next</div>
+<div class="text-center">If you take - you can lost your health from 0 to 15</div>
+<div class="d-flex gap-3 justify-content-center m-2">
+    <a class="btn btn-success" href="{% url 'take' %}">Get Treasure</a>
+    <a class="btn btn-success" href="{% url 'dungeon_go' %}">Go next</a>
+</div>
+{% endblock enter %}
+
+{% block locat_name %}
+Location: Dungeon LVL_{{user.dungeon_lvl}}
+{% endblock locat_name %}

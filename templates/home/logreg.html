@@ -1,0 +1,56 @@
+{% extends 'home/home.html' %}
+{% load static %}
+{% block links %}
+<style>
+    .zxc{
+        z-index:10;
+    }
+    .shadown{
+        box-shadow: 0 0 20px white;
+        border-bottom-left-radius:0.3em;
+        border-bottom-right-radius:0.3em;
+        transition:1s;
+        overflow:hidden;
+    }
+    .shadown:hover{
+        box-shadow:none;
+    }
+    input:focus{
+        outline:none;
+    }
+</style>
+{% endblock links %}
+{% block cont %}
+<div class="d-flex flex-column position-relative zxc">
+    <nav class="nav nav-tabs" id="nav-tab" role="tablist">
+        <a class="nav-link link-info active" id="nav-home-tab" data-bs-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Sign In</a>
+        <a class="nav-link link-info" id="nav-profile-tab" data-bs-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Sign Up</a>
+    </nav>
+      <div class="tab-content d-flex flex-column bg-light shadown p-4" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+            <form action="{% url 'login' %}" method="post" class="log">
+                {% csrf_token %}
+                {% for f in formlog %}
+                <div class="form-floating mt-2">
+                    {{ f }}
+                    <label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>
+                </div>
+                {% endfor %}
+                <input type="submit" value="Sign In" class="btn btn-dark mt-3">
+            </form>
+            <div class="form-erros-login text-center text-danger"></div>
+        </div>
+        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+            <form action="{% url 'reg' %}" enctype="multipart/form-data" method="post" class="reg">
+                {% csrf_token %}
+                {% for f in formreg %}
+                    <label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>
+                    {{ f }}
+                {% endfor %}
+                <input type="submit" value="Sign Up" class="btn btn-dark mt-3">
+            </form>
+            <div class="form-erros-signup text-center text-danger"></div>
+        </div>
+      </div>
+</div>
+{% endblock cont %}

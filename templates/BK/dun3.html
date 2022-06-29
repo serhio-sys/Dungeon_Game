@@ -1,0 +1,16 @@
+{% extends 'BK/dun1.html' %}
+{% load static %}
+{% block map %}{% static 'img/locations/dungeon/dun2.png' %}{% endblock map %}
+
+{% block enter %}
+<div class="text-center">You have problem with bad guys!</div>
+<div class="text-center">You must pay or fight with one of them.</div>
+<div class="d-flex gap-3 justify-content-center m-2">
+    <a class="btn btn-success" href="{{user.get_absolute_url_fight}}">Fight</a>
+    <a class="btn btn-success" href="{% url 'pay' %}">Pay them</a>
+</div>
+{% endblock enter %}
+
+{% block locat_name %}
+Location: Dungeon LVL_{{user.dungeon_lvl}}
+{% endblock locat_name %}

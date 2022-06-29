@@ -1,0 +1,25 @@
+{% extends 'BK/home.html' %}
+{% load static %}
+{% block map %}{% static 'img/locations/loc2/loc_2.jpg' %}{% endblock map %}
+{% block locat_name %}
+Location: Squere
+{% endblock locat_name %}
+{% block enter %}
+<div class="d-flex m-2 justify-content-center">
+    <div>
+        <a class="btn btn-success btn-sm navig ms-3" href="{% url 'sleep' %}">Enter in Sleep Room</a>
+    </div>
+</div>
+{% endblock enter %}
+{% block bnts %}
+<div class="w-100 d-flex justify-content-center">
+    <div class="w-100 d-flex flex-column justify-content-center">
+        <span class="text-center fs-3">Locations</span>
+        <div class="d-flex justify-content-center gap-2">
+            <a class="btn btn-info navig" href="{% url 'loc1' %}">Go to Central</a>
+            <a class="btn btn-info navig" href="{% url 'loc3' %}">Go to Market Street</a>
+        </div>
+    </div>
+   
+</div>
+{% endblock bnts %}

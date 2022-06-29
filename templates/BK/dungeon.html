@@ -1,0 +1,24 @@
+{% extends 'BK/home.html' %}
+{% load static %}
+{% block map %}{% static 'img/locations/dungeon/dun1.png' %}{% endblock map %}
+{% block locat_name %}
+Location: Dungeon
+{% endblock locat_name %}
+{% block enter %}
+<div class="d-flex m-2 justify-content-center">
+    <div>
+        <a class="btn btn-info btn-sm navig ms-3" href="{% url 'dungeon_go' %}">Start Advanture</a>
+    </div>
+</div>
+{% endblock enter %}
+{% block bnts %}
+<div class="w-100 d-flex justify-content-center">
+    <div class="w-100 d-flex flex-column justify-content-center">
+        <span class="text-center fs-3">Locations</span>
+        <div class="d-flex justify-content-center gap-2">
+            <a class="btn btn-info navig" href="{% url 'loc4' %}">Leave with Dungeon</a>
+        </div>
+    </div>
+   
+</div>
+{% endblock bnts %}

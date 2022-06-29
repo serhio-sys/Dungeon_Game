@@ -1,0 +1,9 @@
+{% extends 'BK/success_buy.html' %}
+{% block mes %}
+    <span class='fs-3 text-dark'>You take - {{price}} $</span>
+{% endblock mes %}
+
+{% block bunts %}
+<a class="btn btn-outline-warning ms-2" href="{% url 'dungeon_go' %}">Continue</a>
+<a class="btn btn-outline-warning ms-2" href="{% url 'dungeon' %}">Leave with Dungeon</a>
+{% endblock bunts %} 
