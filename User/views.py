@@ -42,7 +42,7 @@ class UserDetail(DetailView):
     extra_context={'name':'Detail Profile'}
     context_object_name='usr'
 
-class DeleteUSer(LoginRequiredMixin,DeleteView):
+class DeleteUSer(DeleteView):
     model=Newuser
     template_name='home/conf_del.html'
     success_url=reverse_lazy('home')
