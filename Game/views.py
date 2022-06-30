@@ -114,19 +114,19 @@ class DungeonGo(LoginRequiredMixin,View):
         if request.user.health<10:
             return redirect('dungeon')
         select = random.randint(1,100)
-        if select<=40:
+        if select<=30:
             request.user.dungeon_loc = 1
             request.user.save()
             return redirect('dun_loc1')
-        elif select>40 and select<=70:
+        elif select>30 and select<=50:
             request.user.dungeon_loc = 2
             request.user.save()
             return redirect('dun_loc2')
-        elif select>70 and select<=85:
+        elif select>50 and select<=75:
             request.user.dungeon_loc = 4
             request.user.save()
             return redirect('dun_loc4')
-        elif select>85 and select<=100:
+        elif select>75 and select<=100:
             request.user.dungeon_loc = 3
             request.user.save()
             return redirect('dun_loc3')

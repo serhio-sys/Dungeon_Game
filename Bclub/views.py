@@ -31,6 +31,6 @@ class UpdatePhoto(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
 class AllUsers(ListView):
     paginate_by=4
     model=Newuser
-    queryset=Newuser.objects.all().order_by('balance')
+    queryset=Newuser.objects.all().order_by('-balance')
     template_name='home/top.html'
     extra_context={'name':'Forbes Boycovskiy Club'}
