@@ -1,5 +1,5 @@
-from django.shortcuts import redirect
-from django.views.generic import View,DetailView,TemplateView,DeleteView
+from django.shortcuts import redirect,render
+from django.views.generic import View,DetailView,TemplateView
 from django.http import JsonResponse
 from User.forms import CreateUser
 from django.contrib.auth import logout,authenticate,login
@@ -42,8 +42,11 @@ class UserDetail(DetailView):
     extra_context={'name':'Detail Profile'}
     context_object_name='usr'
 
-class DeleteUSer(DeleteView):
-    model=Newuser
-    template_name='home/conf_del.html'
-    success_url=reverse_lazy('home')
-    extra_context={'name':'Delete Profile'}
+class DeleteUSer(LoginRequiredMixin,View):
+
+    def get(self,request,*args, **kwargs):
+        return render(request,'home/conf_del.html',context={'name':'Delete Profile'})
+    
+    def post(self):
+        self.user.delete()
+        return redirect('home')
