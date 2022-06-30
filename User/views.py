@@ -44,5 +44,6 @@ class UserDetail(DetailView):
 
 class DeleteUSer(LoginRequiredMixin,DeleteView):
     model=Newuser
-    success_url ='home'
+    success_url='home'
+    template_name='home/delete.html'
     extra_context={'name':'Delete Profile'}
