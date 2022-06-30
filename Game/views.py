@@ -252,11 +252,11 @@ class Fight(LoginRequiredMixin,UserPassesTestMixin,View):
             request.user.is_fight = True
             allphoto = ['enemy/first.jpg','enemy/second.jpg']
             rnd = random.randint(0,1)
-            if request.user.lvl <= 3:
+            if request.user.dungeon_lvl <= 3:
                 enemy = Enemy.objects.create(name="Bad Guy",attack=5,defence=2,lvl=1,img=allphoto[rnd],slug=request.user.username)
-            elif request.user.lvl > 3 and request.user.dungeon_lvl <= 9:
+            elif request.user.dungeon_lvl > 3 and request.user.dungeon_lvl <= 9:
                 enemy = Enemy.objects.create(name="Bad Guy_2",attack=10,defence=8,lvl=2,img=allphoto[rnd],slug=request.user.username,weapon=Weapon.objects.get(pk=2),armor=Armor.objects.get(pk=2))
-            elif request.user.lvl > 9:
+            elif request.user.dungeon_lvl > 9:
                 enemy = Enemy.objects.create(name="Bad Guy_3",attack=30,defence=25,lvl=3,img=allphoto[rnd],slug=request.user.username,weapon=Weapon.objects.get(pk=4),armor=Armor.objects.get(pk=4))
             request.user.enemy = enemy
             request.user.save()
@@ -305,7 +305,8 @@ class Fight(LoginRequiredMixin,UserPassesTestMixin,View):
                 msg_enemy_def = ""
                 msg_at = f"Your atack ({request.POST['attack']}) is success (-{request.user.ReturnAllDamage() - (int(enemy.ReturnAllArmor()/2))})"
             else:
-                pass
+                msg_enemy_def = ""
+                msg_at = f"Your atack ({request.POST['attack']}) is success (0)"
         if request.POST['defence'] == choic[selat]:
             msg_def = "You blocked enemy atack!"
             msg_enemy_at = ""
@@ -316,7 +317,8 @@ class Fight(LoginRequiredMixin,UserPassesTestMixin,View):
                 msg_def = ""
                 msg_enemy_at = f"Enemy atack ({choic[selat]}) is success (-{enemy.ReturnAllDamage() - (int(request.user.ReturnAllArmor()/2))})"
             else:
-                pass
+                msg_def = ""
+                msg_enemy_at = f"Enemy atack ({choic[selat]}) is success (0)"
         if request.user.health <= 0:
             request.user.health = 0
             request.user.dungeon_loc = 0
