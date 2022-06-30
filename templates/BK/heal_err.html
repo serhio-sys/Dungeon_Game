@@ -1,0 +1,8 @@
+{% extends 'BK/lose.html' %}
+{% block mes %}
+    <span class='fs-3 text-dark'>You have 100HP and don`t need in this! Or don`t have money for healing.</span>
+{% endblock mes %}
+
+{% block bunts %}
+<a class="btn btn-outline-warning ms-2" href="{% url 'dungeon_go' %}">Continue Adventure</a>
+{% endblock bunts %} 

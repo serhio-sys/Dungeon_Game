@@ -122,7 +122,11 @@ class DungeonGo(LoginRequiredMixin,View):
             request.user.dungeon_loc = 2
             request.user.save()
             return redirect('dun_loc2')
-        else:
+        elif select>70 and select<=85:
+            request.user.dungeon_loc = 4
+            request.user.save()
+            return redirect('dun_loc4')
+        elif select>85 and select<=100:
             request.user.dungeon_loc = 3
             request.user.save()
             return redirect('dun_loc3')
@@ -145,6 +149,39 @@ class Dungeon_Loc1(LoginRequiredMixin,View):
             self.request.user.save()
             return redirect('dungeon')
 
+
+class Dungeon_Loc4(LoginRequiredMixin,View):
+
+    def get(self,request,*args, **kwargs):
+        if request.user.dungeon_loc == 3:
+            request.user.health = 0
+            request.user.dungeon_loc = 0
+            request.user.is_fight = False
+            request.user.save()
+            if request.user.enemy is not None:    
+                enemy = Enemy.objects.get(slug=request.user.username)
+                enemy.delete()    
+        if self.request.user.dungeon_loc == 4:
+            return render(request,'BK/dun4.html')
+        else:
+            self.request.user.dungeon_loc = 0
+            self.request.user.save()
+            return redirect('dungeon')
+
+class Healing(LoginRequiredMixin,View):
+    def get(self,request,*args, **kwargs):
+        if request.user.health >= 100:
+            return render(request,'BK/heal_err.html')
+        else:
+            if request.user.balance>=5:
+                request.user.balance-=5
+                request.user.health += 30
+                if request.user.health > 100:
+                    request.user.health = 100
+                request.user.save()
+                return render(request,'BK/success_heal.html')
+            else:
+                return render(request,'BK/heal_err.html')
 
 class Dungeon_Loc2(LoginRequiredMixin,View):
     
@@ -197,6 +234,7 @@ class TakeTreasure(LoginRequiredMixin,View):
             elif request.user.dungeon_lvl > 9:
                 pay = random.randint(300,500)
             request.user.balance += pay
+            request.user.exp += random.randint(1,5)
             request.user.dungeon_loc = 0
             request.user.health -= damage - (int(request.user.ReturnAllArmor()/2))
             if request.user.health <= 0:
