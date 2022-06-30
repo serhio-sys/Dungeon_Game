@@ -231,7 +231,6 @@ class Fight(LoginRequiredMixin,UserPassesTestMixin,View):
                 if enemy.health >= 100:
                     if request.user.dungeon_lvl - 1!=0:
                         request.user.dungeon_lvl -= 1
-                request.user.balance -= 50
                 if request.user.balance<0:
                     request.user.balance=0
                 self.request.user.save()          
@@ -252,6 +251,31 @@ class Fight(LoginRequiredMixin,UserPassesTestMixin,View):
     def post(self,request,*args, **kwargs):
         form_class = AttackF()
         enemy = Enemy.objects.get(slug=request.user.username)
+        choic = {0:'head',1:'body',2:'legs'}
+        selat = random.randint(0,2)
+        seldef = random.randint(0,2)
+        if request.POST['attack'] == choic[seldef]:
+            msg_enemy_def = "Enemy blocked your atack!"
+            msg_at = ""
+        else:
+            if request.user.ReturnAllDamage() - (int(enemy.ReturnAllArmor()/2))>=0:    
+                enemy.health -= request.user.ReturnAllDamage() - (int(enemy.ReturnAllArmor()/2))
+                enemy.save()
+                msg_enemy_def = ""
+                msg_at = f"Your atack ({request.POST['attack']}) is success (-{request.user.ReturnAllDamage() - (int(enemy.ReturnAllArmor()/2))})"
+            else:
+                pass
+        if request.POST['defence'] == choic[selat]:
+            msg_def = "You blocked enemy atack!"
+            msg_enemy_at = ""
+        else:
+            if enemy.ReturnAllDamage() - (int(request.user.ReturnAllArmor()/2))>=0:
+                request.user.health -= enemy.ReturnAllDamage() - (int(request.user.ReturnAllArmor()/2))
+                request.user.save()
+                msg_def = ""
+                msg_enemy_at = f"Enemy atack ({choic[selat]}) is success (-{enemy.ReturnAllDamage() - (int(request.user.ReturnAllArmor()/2))})"
+            else:
+                pass
         if request.user.health <= 0:
             request.user.health = 0
             request.user.dungeon_loc = 0
@@ -280,31 +304,6 @@ class Fight(LoginRequiredMixin,UserPassesTestMixin,View):
             self.request.user.save()
             enemy.delete()
             return render(request,'BK/win.html')
-        choic = {0:'head',1:'body',2:'legs'}
-        selat = random.randint(0,2)
-        seldef = random.randint(0,2)
-        if request.POST['attack'] == choic[seldef]:
-            msg_enemy_def = "Enemy blocked your atack!"
-            msg_at = ""
-        else:
-            if request.user.ReturnAllDamage() - (int(enemy.ReturnAllArmor()/2))>=0:    
-                enemy.health -= request.user.ReturnAllDamage() - (int(enemy.ReturnAllArmor()/2))
-                enemy.save()
-                msg_enemy_def = ""
-                msg_at = f"Your atack ({request.POST['attack']}) is success (-{request.user.ReturnAllDamage() - (int(enemy.ReturnAllArmor()/2))})"
-            else:
-                pass
-        if request.POST['defence'] == choic[selat]:
-            msg_def = "You blocked enemy atack!"
-            msg_enemy_at = ""
-        else:
-            if enemy.ReturnAllDamage() - (int(request.user.ReturnAllArmor()/2))>=0:
-                request.user.health -= enemy.ReturnAllDamage() - (int(request.user.ReturnAllArmor()/2))
-                request.user.save()
-                msg_def = ""
-                msg_enemy_at = f"Enemy atack ({choic[selat]}) is success (-{enemy.ReturnAllDamage() - (int(request.user.ReturnAllArmor()/2))})"
-            else:
-                pass
         return render(request,'BK/fight.html',context={'enemy':enemy,'form':form_class,'msg_at':msg_at,'msg_def':msg_def,'msg_bot_a':msg_enemy_at,'msg_bot_def':msg_enemy_def})
 
 
