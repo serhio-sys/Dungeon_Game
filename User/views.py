@@ -1,5 +1,5 @@
 from django.shortcuts import redirect
-from django.views.generic import View,DetailView,TemplateView
+from django.views.generic import View,DetailView,TemplateView,DeleteView
 from django.http import JsonResponse
 from User.forms import CreateUser
 from django.contrib.auth import logout,authenticate,login
@@ -41,3 +41,8 @@ class UserDetail(DetailView):
     template_name='home/detailuser.html'
     extra_context={'name':'Detail Profile'}
     context_object_name='usr'
+
+class DeleteUSer(LoginRequiredMixin,DeleteView):
+    model=Newuser
+    template_name='home/delete.html'
+    extra_context={'name':'Delete Profile'}

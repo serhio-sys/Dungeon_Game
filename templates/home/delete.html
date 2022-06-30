@@ -1,0 +1,46 @@
+{% extends 'home/home.html' %}
+{% load static %}
+{% block links %}
+<style>
+    
+    .item_img{
+            
+        width:80px;
+        height:80px;
+    }
+    .zxc{
+        z-index:10;
+    }
+   .no_image_attr{
+    width:80px;
+    height:80px;
+    background:rgba(0,0,0,0.6);
+   }
+   .bg_pr{
+    background: green;
+   }
+   .img_user{
+    width:200px;
+    height:auto;
+    object-fit:cover;
+    position:relative;
+    z-index:3;
+   }
+   .shadown{
+    box-shadow: 0 0 20px white;
+    border-bottom-left-radius:0.3em;
+    border-bottom-right-radius:0.3em;
+    transition:1s;
+    overflow:hidden;
+}
+.shadown:hover{
+    box-shadow:none;
+}
+</style>
+{% endblock links %}
+{% block cont %}
+<div>
+    <span class='fs-4 text-light'>Press submit for delete account.</span>
+    <a href="home" class="btn btn-danger">Submit</a>
+</div>
+{% endblock cont %}
