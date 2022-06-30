@@ -40,6 +40,12 @@ class Newuser(AbstractUser):
                 self.exp=0
         self.save()
         return self.lvl
+
+    def get_absolute_url(self):
+        return reverse("del", kwargs={"pk": self.pk})
+
+    def get_absolute_url_upd(self):
+        return reverse("upd", kwargs={"pk": self.pk})
     
     def get_absolute_url_sleep(self):
         return reverse("sleeping", kwargs={"pk": self.pk})
