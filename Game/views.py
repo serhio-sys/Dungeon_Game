@@ -252,11 +252,11 @@ class Fight(LoginRequiredMixin,UserPassesTestMixin,View):
             request.user.is_fight = True
             allphoto = ['enemy/first.jpg','enemy/second.jpg']
             rnd = random.randint(0,1)
-            if request.user.dungeon_lvl <= 3:
+            if request.user.lvl <= 3:
                 enemy = Enemy.objects.create(name="Bad Guy",attack=5,defence=2,lvl=1,img=allphoto[rnd],slug=request.user.username)
-            elif request.user.dungeon_lvl > 3 and request.user.dungeon_lvl <= 9:
+            elif request.user.lvl > 3 and request.user.dungeon_lvl <= 9:
                 enemy = Enemy.objects.create(name="Bad Guy_2",attack=10,defence=8,lvl=2,img=allphoto[rnd],slug=request.user.username,weapon=Weapon.objects.get(pk=2),armor=Armor.objects.get(pk=2))
-            elif request.user.dungeon_lvl > 9:
+            elif request.user.lvl > 9:
                 enemy = Enemy.objects.create(name="Bad Guy_3",attack=30,defence=25,lvl=3,img=allphoto[rnd],slug=request.user.username,weapon=Weapon.objects.get(pk=4),armor=Armor.objects.get(pk=4))
             request.user.enemy = enemy
             request.user.save()
@@ -276,7 +276,12 @@ class Fight(LoginRequiredMixin,UserPassesTestMixin,View):
                 request.user.is_fight = False
                 request.user.dungeon_loc = 0
                 request.user.exp += random.randint(15,30)
-                request.user.balance += random.randint(20,50)
+                if enemy.lvl == 1:
+                    request.user.balance += random.randint(20,50)
+                elif enemy.lvl == 2:
+                    request.user.balance += random.randint(120,250)
+                else:
+                    request.user.balance += random.randint(220,350)
                 if request.user.health >= 100:
                     request.user.dungeon_lvl += 1
                 self.request.user.save()
