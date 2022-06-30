@@ -39,48 +39,44 @@
 </style>
 {% endblock links %}
 {% block cont %}
-{% if user.is_authenticated %}
 <div class="card zxc">
     <div class="card-header">
-      {{user.username}}
+      {{usr.username}}
     </div>
     <div class="card-body d-flex p-3 shadown">
         <div class='m-3 d-flex flex-column align-items-between'>
             <div class="img_user"><img src="{% static 'img/based_2.png' %}" class="w-100 h-100" /></div>
-            <span>Health: {{user.health}}/100</span>
+            <span>Health: {{usr.health}}/100</span>
             <div class="progress mt-1">
-                <div class="progress-bar bg_pr" role="progressbar" style="width: {{user.health}}%" aria-valuenow="{{user.health}}" aria-valuemin="0" aria-valuemax="100">Health: {{user.health}}</div>
+                <div class="progress-bar bg_pr" role="progressbar" style="width: {{usr.health}}%" aria-valuenow="{{usr.health}}" aria-valuemin="0" aria-valuemax="100">Health: {{usr.health}}</div>
             </div>
         </div>
         <div class='m-3'>
             <span class="text-center">Weapon</span>
-            {% if user.weapon.img %}
-            <div><img src="{{user.weapon.img.url}}" class="item_img mb-3"/></div>
+            {% if usr.weapon.img %}
+            <div><img src="{{usr.weapon.img.url}}" class="item_img mb-3"/></div>
             {% else %}
             <div class='no_image_attr mb-3'></div>
             {% endif %}
             <span class='text-center'>Shield</span>
-            {% if user.armor.img %}
-            <div><img src="{{user.armor.img.url}}" class="item_img mb-3"/></div>
+            {% if usr.armor.img %}
+            <div><img src="{{usr.armor.img.url}}" class="item_img mb-3"/></div>
             {% else %}
             <div class='no_image_attr'></div>
             {% endif %}
         </div>
         <div class='m-3 '>
             <div class='text-center'><b>Stats</b></div>
-            <div>Your damage: {{user.ReturnAllDamage}}</div>
-            <div>Your defence: {{user.ReturnAllArmor}}</div>
-            <div>Your balance: {{user.balance}} $</div>
-            <div>Your LVL: {{user.CheckEXP}}</div>
+            <div>Damage: {{usr.ReturnAllDamage}}</div>
+            <div>Defence: {{usr.ReturnAllArmor}}</div>
+            <div>Balance: {{usr.balance}} $</div>
+            <div>LVL: {{usr.CheckEXP}}</div>
             <div class="mt-3">Exp:</div>
             <div class="progress">
-                <div class="progress-bar" role="progressbar" style="width: {{user.exp}}%;" aria-valuenow="{{user.exp}}" aria-valuemin="0" aria-valuemax="100">{{user.exp}}/100</div>
+                <div class="progress-bar" role="progressbar" style="width: {{usr.exp}}%;" aria-valuenow="{{usr.exp}}" aria-valuemin="0" aria-valuemax="100">{{usr.exp}}/100</div>
             </div>
             </div>
         </div>
     </div>
   </div>
-  {% else %}
-  <a href="{% url 'home' %}" class='btn btn-outline-light zxc'>Back to home page</a>
-  {% endif %}
 {% endblock cont %}

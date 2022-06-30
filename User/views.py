@@ -1,9 +1,10 @@
 from django.shortcuts import redirect
-from django.views.generic import View,DetailView
+from django.views.generic import View,DetailView,TemplateView
 from django.http import JsonResponse
 from User.forms import CreateUser
 from django.contrib.auth import logout,authenticate,login
 from .models import *
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 
 class CreateU(View):
@@ -31,7 +32,12 @@ def Logout(req):
     return redirect('home')
 
 
-class User(DetailView):
-    model=Newuser
+class User(LoginRequiredMixin,TemplateView):
     template_name='home/user.html'
     extra_context={'name':'Profile'}
+
+class UserDetail(DetailView):
+    model=Newuser
+    template_name='home/detailuser.html'
+    extra_context={'name':'Detail Profile'}
+    context_object_name='usr'

@@ -196,6 +196,7 @@
                 <div class="d-flex w-100 up">
                     <div class='user_model  d-flex flex-column align-items-between'>
                         <div class="img_user"><img src="{% static 'img/based_2.png' %}" class="w-100 h-100" /></div>
+                        <span>Health: {{user.health}}/100</span>
                         <div class="progress mt-1">
                             <div class="progress-bar bg_pr" role="progressbar" style="width: {{user.health}}%" aria-valuenow="{{user.health}}" aria-valuemin="0" aria-valuemax="100">Health: {{user.health}}</div>
                     </div>

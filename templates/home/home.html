@@ -116,7 +116,7 @@
                                 {{user.username}}
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                          <li><a class="dropdown-item text-center" href="{{user.get_absolute_url}}">Detail</a></li>
+                          <li><a class="dropdown-item text-center" href="{% url 'userq' %}">Detail</a></li>
                           <li><a class="dropdown-item text-center" href="#">Balance: {{user.balance}}</a></li>
                           <li><a class="dropdown-item text-center" href="{% url 'logout' %}">Logout</a></li>
                         </ul>
