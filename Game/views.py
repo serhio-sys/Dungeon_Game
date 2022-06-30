@@ -200,6 +200,8 @@ class TakeTreasure(LoginRequiredMixin,View):
             request.user.balance += pay
             request.user.dungeon_loc = 0
             request.user.health -= damage - (int(request.user.ReturnAllArmor()/2))
+            if request.user.health <= 0:
+                request.user.health = 0
             request.user.save()
             return render(request,'BK/success_take.html',context={'price':pay})
         else:
@@ -249,6 +251,7 @@ class Fight(LoginRequiredMixin,UserPassesTestMixin,View):
             return render(request,'BK/fight.html',context={'enemy':enemy,'form':form_class})
     
     def post(self,request,*args, **kwargs):
+        form_class = AttackF()
         enemy = Enemy.objects.get(slug=request.user.username)
         if request.user.health <= 0:
             request.user.health = 0
@@ -282,22 +285,28 @@ class Fight(LoginRequiredMixin,UserPassesTestMixin,View):
         selat = random.randint(0,2)
         seldef = random.randint(0,2)
         if request.POST['attack'] == choic[seldef]:
-            pass
+            msg_enemy_def = "Enemy blocked your atack!"
+            msg_at = ""
         else:
             if request.user.ReturnAllDamage() - (int(enemy.ReturnAllArmor()/2))>=0:    
                 enemy.health -= request.user.ReturnAllDamage() - (int(enemy.ReturnAllArmor()/2))
                 enemy.save()
+                msg_enemy_def = ""
+                msg_at = f"Your atack ({request.POST['attack']}) is success (-{request.user.ReturnAllDamage() - (int(enemy.ReturnAllArmor()/2))})"
             else:
                 pass
         if request.POST['defence'] == choic[selat]:
-            pass
+            msg_def = "You blocked enemy atack!"
+            msg_enemy_at = ""
         else:
             if enemy.ReturnAllDamage() - (int(request.user.ReturnAllArmor()/2))>=0:
                 request.user.health -= enemy.ReturnAllDamage() - (int(request.user.ReturnAllArmor()/2))
                 request.user.save()
+                msg_def = ""
+                msg_enemy_at = f"Enemy atack ({choic[selat]}) is success (-{enemy.ReturnAllDamage() - (int(request.user.ReturnAllArmor()/2))})"
             else:
                 pass
-        return redirect('fight',self.kwargs['pk'])
+        return render(request,'BK/fight.html',context={'enemy':enemy,'form':form_class,'msg_at':msg_at,'msg_def':msg_def,'msg_bot_a':msg_enemy_at,'msg_bot_def':msg_enemy_def})
 
 
     

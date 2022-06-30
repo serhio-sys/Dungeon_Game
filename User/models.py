@@ -30,12 +30,15 @@ class Newuser(AbstractUser):
             return self.defence+self.armor.armor
 
     def CheckEXP(self):
-        if self.exp>=100:
-            self.lvl+=1
-            self.defence=self.defence+1
-            self.attack=self.attack+1
-            self.exp=0
-            self.save()
+        if self.lvl == 99:
+            self.exp=100
+        else:
+            if self.exp>=100:
+                self.lvl+=1
+                self.defence=self.defence+1
+                self.attack=self.attack+1
+                self.exp=0
+        self.save()
         return self.lvl
 
     def get_absolute_url(self):
