@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-w$cyz-$gaxhj@+l0#-v#6^-_1s_cz#jr(h#9chf*@+gv%%*mt@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['https://dungeon-game-project.herokuapp.com','127.0.0.1']
 
 
 # Application definition
