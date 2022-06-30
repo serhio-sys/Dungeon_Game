@@ -1,5 +1,5 @@
 from django.shortcuts import redirect
-from django.views.generic import View,DetailView,UpdateView
+from django.views.generic import View,DetailView
 from django.http import JsonResponse
 from User.forms import CreateUser
 from django.contrib.auth import logout,authenticate,login

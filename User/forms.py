@@ -1,6 +1,6 @@
 from django import forms
 from User.models import *
-from django.contrib.auth.forms import UserCreationForm,AuthenticationForm,UserChangeForm
+from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 
 class CreateUser(UserCreationForm):
     username = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))

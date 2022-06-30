@@ -3,7 +3,6 @@ from django.views.generic import TemplateView,View
 from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 import random
 from Game.forms import AttackF
-
 from User.models import Armor, Enemy, Newuser, Weapon
 
 class Location1(LoginRequiredMixin,TemplateView):
