@@ -35,7 +35,7 @@ $(".log").submit(function(e){
         processData: false,
         success: function(response){
             if ("success" in response){
-                location.replace("http://127.0.0.1:8000/")
+                location.replace("https://dungeon-game-project.herokuapp.com/")
             }
             else if("error" in response){
                 document.querySelector('.form-erros-login').innerHTML = "<b>" + response["error"] + "</b>"
