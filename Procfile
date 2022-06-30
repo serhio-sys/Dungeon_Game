@@ -1,1 +1,1 @@
-web: gunicorn Bclub.wsgi
+web: gunicorn Bclub.wsgi --log-file
