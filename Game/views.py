@@ -269,8 +269,6 @@ class Fight(LoginRequiredMixin,UserPassesTestMixin,View):
                 if enemy.health >= 100:
                     if request.user.dungeon_lvl - 1!=0:
                         request.user.dungeon_lvl -= 1
-                if request.user.balance<0:
-                    request.user.balance=0
                 self.request.user.save()          
                 enemy.delete()
                 return render(request,'BK/lose.html')
@@ -321,9 +319,6 @@ class Fight(LoginRequiredMixin,UserPassesTestMixin,View):
             if enemy.health >= 100:
                 if request.user.dungeon_lvl - 1!=0:
                     request.user.dungeon_lvl -= 1
-            request.user.balance -= 50
-            if request.user.balance<0:
-                request.user.balance=0
             self.request.user.save()
             enemy.delete()
             return render(request,'BK/lose.html')
