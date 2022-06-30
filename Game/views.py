@@ -112,7 +112,7 @@ class DungeonGo(LoginRequiredMixin,View):
                 enemy = Enemy.objects.get(slug=request.user.username)
                 enemy.delete()
         if request.user.health<10:
-            return render(request,'enter_err.html')
+            return render(request,'BK/enter_err.html')
         select = random.randint(1,100)
         if select<=30:
             request.user.dungeon_loc = 1
@@ -263,7 +263,7 @@ class Fight(LoginRequiredMixin,UserPassesTestMixin,View):
             elif request.user.dungeon_lvl > 9 and request.user.dungeon_lvl <= 13:
                 enemy = Enemy.objects.create(name="Bad Guy_3",attack=30,defence=25,lvl=3,img=allphoto[rnd],slug=request.user.username,weapon=Weapon.objects.get(pk=4),armor=Armor.objects.get(pk=4))
             elif request.user.dungeon_lvl > 13:
-                enemy = Enemy.objects.create(name="Bad Guy_3",attack=40,defence=35,lvl=3,img=allphoto[rnd],slug=request.user.username,weapon=Weapon.objects.get(pk=5),armor=Armor.objects.get(pk=5))
+                enemy = Enemy.objects.create(name="Bad Guy_4",attack=40,defence=35,lvl=4,img=allphoto[rnd],slug=request.user.username,weapon=Weapon.objects.get(pk=5),armor=Armor.objects.get(pk=5))
             request.user.enemy = enemy
             request.user.save()
             return render(request,'BK/fight.html',context={'enemy':enemy,'form':form_class})
