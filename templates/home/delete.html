@@ -39,8 +39,9 @@
 </style>
 {% endblock links %}
 {% block cont %}
-<div>
-    <span class='fs-4 text-light'>Press submit for delete account.</span>
-    <a href="home" class="btn btn-danger">Submit</a>
-</div>
+    <form method="post">
+        {% csrf_token %}
+        <span class='fs-4 text-light'>Press submit for delete account.</span>
+            <input type="submit" class="btn btn-danger" value="Submit">
+        </form>
 {% endblock cont %}
