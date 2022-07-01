@@ -8,14 +8,14 @@ Location: Dungeon
 <div class="d-flex m-2 justify-content-center">
     <div>
         <a class="btn btn-info btn-sm navig ms-3" href="{% url 'dungeon_go' %}">Start Advanture</a>
-        {% if user.dungeon_lvl == 1 and user.lvl>=3 %}
-            <div>If you want up your dungeon_lvl you must win in fight with Boss</div>
+        {% if user.dungeon_lvl == 1 %}
+            <div>If you want up your dungeon_lvl you must win in fight with First Boss</div>
             <div class='text-center'><a class="btn btn-warning">Fight with Boss</a><div>
-        {% elif user.dungeon_lvl == 2 and user.lvl>=7 %}
-            <div>If you want up your dungeon_lvl you must win in fight with Boss</div>
+        {% elif user.dungeon_lvl == 2 %}
+            <div>If you want up your dungeon_lvl you must win in fight with Second Boss</div>
             <div class='text-center'><a class="btn btn-warning">Fight with Boss</a><div>
-        {% elif user.dungeon_lvl == 2 and user.lvl>=7 %}
-            <div>If you want up your dungeon_lvl you must win in fight with Boss</div>
+        {% elif user.dungeon_lvl == 3 %}
+            <div>If you want up your dungeon_lvl you must win in fight with Third Boss</div>
             <div class='text-center'><a class="btn btn-warning">Fight with Boss</a><div>
         {% endif %}
     </div>
