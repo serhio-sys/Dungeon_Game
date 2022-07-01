@@ -22,6 +22,7 @@ class UpdatePhoto(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     model=Newuser
     fields=['img',]
     template_name='home/upd.html'
+    success_url = reverse_lazy('home')
     extra_context={'name':'Update Photo'}
 
     def test_func(self):

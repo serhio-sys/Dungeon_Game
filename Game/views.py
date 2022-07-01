@@ -1,4 +1,5 @@
 from django.shortcuts import redirect,render
+from django.template.loader import render_to_string
 from django.views.generic import TemplateView,View
 from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 import random
@@ -308,7 +309,8 @@ class Fight(LoginRequiredMixin,UserPassesTestMixin,View):
             request.user.is_fight = False
             self.request.user.save()
             enemy.delete()
-            return render(request,'BK/lose.html')
+            html = render_to_string(request=request,template_name='BK/lose.html')
+            return JsonResponse({"html":html},status=200)
         elif enemy.health <= 0:
             request.user.is_fight = False
             request.user.dungeon_loc = 0
@@ -321,8 +323,10 @@ class Fight(LoginRequiredMixin,UserPassesTestMixin,View):
                 request.user.balance += random.randint(220,350)
             self.request.user.save()
             enemy.delete()
-            return render(request,'BK/win.html')
-        return render(request,'BK/fight.html',context={'enemy':enemy,'form':form_class,'msg_at':msg_at,'msg_def':msg_def,'msg_bot_a':msg_enemy_at,'msg_bot_def':msg_enemy_def})
+            html = render_to_string(request=request,template_name='BK/win.html')
+            return JsonResponse({"html":html},status=200)
+        html = render_to_string(request=request,template_name='BK/fight.html',context={'enemy':enemy,'form':form_class,'msg_at':msg_at,'msg_def':msg_def,'msg_bot_a':msg_enemy_at,'msg_bot_def':msg_enemy_def})
+        return JsonResponse({"html":html},status=200)
 
 
     
@@ -336,14 +340,13 @@ class BossFight(LoginRequiredMixin,UserPassesTestMixin,View):
         form_class = AttackF()
         if request.user.is_fight==False:
             request.user.is_fight = True
-            allphoto = ['enemy/first.jpg','enemy/second.jpg']
             rnd = random.randint(0,1)
             if request.user.dungeon_lvl == 1:
-                enemy = Enemy.objects.create(name="BOSS_lvl_1",attack=10,defence=7,lvl=98,img=allphoto[rnd],slug=request.user.username)
+                enemy = Enemy.objects.create(name="BOSS_lvl_1",health=150,attack=10,defence=7,lvl=98,img="enemy/first.png",slug=request.user.username)
             elif request.user.dungeon_lvl == 2:
-                enemy = Enemy.objects.create(name="BOSS_lvl_2",attack=15,defence=12,lvl=99,img=allphoto[rnd],slug=request.user.username,weapon=Weapon.objects.get(pk=2),armor=Armor.objects.get(pk=2))
+                enemy = Enemy.objects.create(name="BOSS_lvl_2",attack=25,health=200,defence=16,lvl=99,img="enemy/second.png",slug=request.user.username,weapon=Weapon.objects.get(pk=2),armor=Armor.objects.get(pk=2))
             elif request.user.dungeon_lvl == 3:
-                enemy = Enemy.objects.create(name="BOSS_lvl_3",attack=40,defence=35,lvl=100,img=allphoto[rnd],slug=request.user.username,weapon=Weapon.objects.get(pk=4),armor=Armor.objects.get(pk=4))
+                enemy = Enemy.objects.create(name="BOSS_lvl_3",attack=50,defence=45,health=300,lvl=100,img="enemy/third.png",slug=request.user.username,weapon=Weapon.objects.get(pk=4),armor=Armor.objects.get(pk=4))
             request.user.enemy = enemy
             request.user.save()
             return render(request,'BK/fight.html',context={'enemy':enemy,'form':form_class})
@@ -387,7 +390,8 @@ class BossFight(LoginRequiredMixin,UserPassesTestMixin,View):
             request.user.is_fight = False
             self.request.user.save()
             enemy.delete()
-            return render(request,'BK/boss_lose.html')
+            html = render_to_string(request=request,template_name='BK/boss_lose.html')
+            return JsonResponse({"html":html},status=200)
         elif enemy.health <= 0:
             request.user.is_fight = False
             request.user.dungeon_loc = 0
@@ -405,11 +409,11 @@ class BossFight(LoginRequiredMixin,UserPassesTestMixin,View):
                 lvl = "Third"
                 request.user.balance += pay
             self.request.user.save()
-            
             enemy.delete()
-            return render(request,'BK/boss_win.html',context={'rew':pay,'lvl':lvl})
-        return render(request,'BK/boss_fight.html',context={'enemy':enemy,'form':form_class,'msg_at':msg_at,'msg_def':msg_def,'msg_bot_a':msg_enemy_at,'msg_bot_def':msg_enemy_def})
-
+            html = render_to_string(request=request,template_name='BK/boss_win.html',context={'lvl':lvl,'rew':pay})
+            return JsonResponse({"html":html},status=200)
+        html = render_to_string(request=request,template_name='BK/boss_fight.html',context={'enemy':enemy,'form':form_class,'msg_at':msg_at,'msg_def':msg_def,'msg_bot_a':msg_enemy_at,'msg_bot_def':msg_enemy_def})
+        return JsonResponse({"html":html},status=200)
 
     
     def test_func(self):

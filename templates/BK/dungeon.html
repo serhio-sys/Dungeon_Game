@@ -2,48 +2,61 @@
 {% load static %}
 {% block map %}{% static 'img/locations/dungeon/dun1.png' %}{% endblock map %}
 {% block locat_name %}
-Location: Dungeon
+Location: Dungeon_LVL {{user.dungeon_lvl}}
 {% endblock locat_name %}
 {% block enter %}
 <div class="d-flex m-2 justify-content-center">
     <div>
-        <a class="btn btn-info btn-sm navig ms-3" href="{% url 'dungeon_go' %}">Start Advanture</a>
-        {% if user.dungeon_lvl == 1 %}
-            <div>If you want up your dungeon_lvl you must win in fight with First Boss</div>
-            <div class='text-center'><a class="btn btn-warning">Fight with Boss</a><div>
-        {% elif user.dungeon_lvl == 2 %}
+        {% if user.dungeon_lvl == 1 and user.lvl >= 5 %}
+            <div class="text-center">If you want up your dungeon_lvl you must win in fight with First Boss</div>
+            <div class='text-center d-flex gap-3 m-2 justify-content-center'>
+                <a class="btn btn-info" href="{% url 'dungeon_go' %}">Start Advanture</a>
+                <a class="btn btn-warning" href="{{user.get_absolute_url_bossfight}}">Fight with Boss</a>
+            <div>
+        {% elif user.dungeon_lvl == 2 and user.lvl >= 10 %}
             <div>If you want up your dungeon_lvl you must win in fight with Second Boss</div>
-            <div class='text-center'><a class="btn btn-warning">Fight with Boss</a><div>
-        {% elif user.dungeon_lvl == 3 %}
+            <div class='text-center d-flex gap-3 m-2 justify-content-center'>
+                <a class="btn btn-info" href="{% url 'dungeon_go' %}">Start Advanture</a>
+                <a class="btn btn-warning" href="{{user.get_absolute_url_bossfight}}">Fight with Boss</a>
+            <div>
+        {% elif user.dungeon_lvl == 3 and user.lvl >= 15 %}
             <div>If you want up your dungeon_lvl you must win in fight with Third Boss</div>
-            <div class='text-center'><a class="btn btn-warning">Fight with Boss</a><div>
+            <div class='text-center d-flex gap-3 m-2 justify-content-center'>
+                <a class="btn btn-info " href="{% url 'dungeon_go' %}">Start Advanture</a>
+                <a class="btn btn-warning" href="{{user.get_absolute_url_bossfight}}">Fight with Boss</a>
+            <div>
+        {% else %}
+        
+        <div class='text-center d-flex gap-3 m-2 justify-content-center'>
+            <a class="btn btn-info" href="{% url 'dungeon_go' %}">Start Advanture</a>
+        <div>
         {% endif %}
     </div>
 </div>
 {% endblock enter %}
 {% block bnts %}
-<div class="w-100 d-flex justify-content-center">
+<div class="vw-100 d-flex justify-content-center">
     <div class="w-100 d-flex flex-column justify-content-center">
-        <span class="text-center fs-3">Locations</span>
-        <div class="d-flex justify-content-center gap-2">
-            <a class="btn btn-info navig" href="{% url 'loc4' %}">Leave with Dungeon</a>
-            <div class="text-center">Your dungeon_lvl - {{user.dungeon_lvl}}</div>
-            <div class="d-flex flex-wrap">
+        <div class="d-flex justify-content-center flex-column">
+            
+<div class="d-flex justify-content-center"><a class="btn btn-info" href="{% url 'loc4' %}">Leave with Dungeon</a></div>
+            <div class="d-flex w-100 mt-4 justify-content-center">
+               {% if user.dungeon_lvl == 1 %}
                <div> 
-                <div>If dungeon_lvl = 1</div>
                 <div>Tresure - [from 50 to 100]</div>
                 <div>Enemy pay - [from 50 to 100]</div>
                </div>
+               {% elif user.dungeon_lvl == 2 %}
                <div>
-                <div>If dungeon_lvl = 2</div>
                 <div>Tresure - [from 100 to 200]</div>
                 <div>Enemy pay - [from 80 to 150]</div>
                </div>
+               {% else %}
                <div>
-                <div>If dungeon_lvl = 3</div>
                 <div>Tresure - [from 300 to 500]</div>
                 <div>Enemy pay - [from 200 to 400]</div>
                </div>
+              {% endif %}
             </div>
         </div>
     </div>
