@@ -2,3 +2,18 @@
 {% block locat_name %}
     Location: Boss Fight
 {% endblock locat_name %}
+{% block bnts %}
+                <form method="POST" action="{{user.get_absolute_url_bossfight}}" class="fight d-flex flex-column">
+                    {% csrf_token %}
+                    <div>
+                        {% for f in form %}
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label" for="{{ f.id_for_label }}">{{f.label}}</label>
+                        {{f}}
+                        <div class="form-error">{{ f.errors }}</div>
+                      </div>
+                    {% endfor %}
+                    </div>
+                    <div class="text-center"><button type="submit" class="btn btn-warning mt-2">Gooo!</button></div>
+                </form>
+{% endblock bnts %}

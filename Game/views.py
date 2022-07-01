@@ -348,7 +348,7 @@ class BossFight(LoginRequiredMixin,UserPassesTestMixin,View):
                 enemy = Enemy.objects.create(name="BOSS_lvl_3",attack=60,defence=55,health=300,lvl=100,img="enemy/third.png",slug=request.user.username,weapon=Weapon.objects.get(pk=4),armor=Armor.objects.get(pk=4))
             request.user.enemy = enemy
             request.user.save()
-            return render(request,'BK/fight.html',context={'enemy':enemy,'form':form_class})
+            return render(request,'BK/boss_fight.html',context={'enemy':enemy,'form':form_class})
         else:
             enemy = Enemy.objects.get(slug=request.user.username)
             return render(request,'BK/boss_fight.html',context={'enemy':enemy,'form':form_class})
