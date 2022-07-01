@@ -57,6 +57,9 @@ class Newuser(AbstractUser):
     def get_absolute_url_bossfight(self):
         return reverse("bossfight", kwargs={"pk": self.pk})
 
+    def get_absolute_url_bossfight_st(self):
+        return reverse("bossfight_st", kwargs={"pk": self.pk})
+
     def get_absolute_url_urs(self):
         return reverse("user", kwargs={"pk": self.pk})
 

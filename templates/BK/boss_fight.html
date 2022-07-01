@@ -3,7 +3,7 @@
     Location: Boss Fight
 {% endblock locat_name %}
 {% block bnts %}
-                <form method="POST" action="{{user.get_absolute_url_bossfight}}" class="fight d-flex flex-column">
+                <form method="POST" action="{{user.get_absolute_url_bossfight_st}}" class="fight d-flex flex-column">
                     {% csrf_token %}
                     <div>
                         {% for f in form %}

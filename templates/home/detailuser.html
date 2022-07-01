@@ -44,7 +44,7 @@
     </div>
     <div class="card-body d-flex p-3 shadown">
         <div class='m-3 d-flex flex-column align-items-between'>
-            <div class="img_user"><img src="{% if user.dungeon_lvl == 1 %}{% static 'img/based_2.png' %}{% elif user.dungeon_lvl == 2 %}{% static 'img/based_3.png' %}{% elif user.dungeon_lvl == 3 %}{% static 'img/based_4.png' %}{% elif user.dungeon_lvl == 4 %}{% static 'img/based_5.png' %}{% else %}{% static 'img/based_6.png' %}{% endif %}" class="w-100 h-100" /></div>
+            <div class="img_user"><img src="{% if usr.dungeon_lvl == 1 %}{% static 'img/based_2.png' %}{% elif usr.dungeon_lvl == 2 %}{% static 'img/based_3.png' %}{% elif usr.dungeon_lvl == 3 %}{% static 'img/based_4.png' %}{% elif usr.dungeon_lvl == 4 %}{% static 'img/based_5.png' %}{% else %}{% static 'img/based_6.png' %}{% endif %}" class="w-100 h-100" /></div>
             <span>Health: {{usr.health}}/100</span>
             <div class="progress mt-1">
                 <div class="progress-bar bg_pr" role="progressbar" style="width: {{usr.health}}%" aria-valuenow="{{usr.health}}" aria-valuemin="0" aria-valuemax="100">Health: {{usr.health}}</div>

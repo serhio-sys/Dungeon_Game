@@ -93,12 +93,12 @@ class Dungeon(LoginRequiredMixin,View):
         if request.user.dungeon_loc == 3 or request.user.is_fight:
             request.user.health = 0
             request.user.dungeon_loc = 0
-            request.user.is_fight = 0
+            request.user.is_fight = False
             request.user.save()
             if request.user.enemy is not None:    
                 enemy = Enemy.objects.get(slug=request.user.username)
                 enemy.delete()
-            return render(request,'BK/dungeon.html')
+            return render(request,'BK/err.html')
         else:
             return render(request,'BK/dungeon.html')
 
@@ -262,7 +262,7 @@ class Fight(LoginRequiredMixin,UserPassesTestMixin,View):
 
     def get(self,request,*args, **kwargs):
         form_class = AttackF()
-        if request.user.is_fight==False:
+        if request.user.is_fight==False and request.user.dungeon_loc==3:
             request.user.is_fight = True
             allphoto = ['enemy/first.jpg','enemy/second.jpg']
             rnd = random.randint(0,1)
@@ -279,6 +279,8 @@ class Fight(LoginRequiredMixin,UserPassesTestMixin,View):
             request.user.enemy = enemy
             request.user.save()
             return render(request,'BK/fight.html',context={'enemy':enemy,'form':form_class})
+        elif request.user.dungeon_loc==0:
+            return redirect('dungeon')
         else:
             enemy = Enemy.objects.get(slug=request.user.username)
             return render(request,'BK/fight.html',context={'enemy':enemy,'form':form_class})
@@ -348,11 +350,22 @@ class Fight(LoginRequiredMixin,UserPassesTestMixin,View):
         user = Newuser.objects.get(pk=self.kwargs['pk'])
         return self.request.user==user
 
+class BossRedirect(LoginRequiredMixin,UserPassesTestMixin,View):
+
+    def get(self,request,*args, **kwargs):
+        request.user.dungeon_loc=3
+        request.user.save()
+        return redirect('bossfight_st',self.kwargs["pk"])
+
+    def test_func(self):
+        user = Newuser.objects.get(pk=self.kwargs['pk'])
+        return self.request.user==user
+
 class BossFight(LoginRequiredMixin,UserPassesTestMixin,View):
 
     def get(self,request,*args, **kwargs):
         form_class = AttackF()
-        if request.user.is_fight==False:
+        if request.user.is_fight==False and request.user.dungeon_loc==3:
             request.user.is_fight = True
             if request.user.dungeon_lvl == 1:
                 enemy = Enemy.objects.create(name="BOSS_lvl_1",health=100,attack=20,defence=17,lvl=98,img="enemy/boss4.webp",slug=request.user.username)
@@ -365,6 +378,8 @@ class BossFight(LoginRequiredMixin,UserPassesTestMixin,View):
             request.user.enemy = enemy
             request.user.save()
             return render(request,'BK/boss_fight.html',context={'enemy':enemy,'form':form_class})
+        elif request.user.dungeon_loc==0:
+            return redirect('dungeon')
         else:
             enemy = Enemy.objects.get(slug=request.user.username)
             return render(request,'BK/boss_fight.html',context={'enemy':enemy,'form':form_class})

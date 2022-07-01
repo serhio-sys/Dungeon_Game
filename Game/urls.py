@@ -23,5 +23,6 @@ urlpatterns = [
     path('dungeon_go/payed/',PayBadGuys.as_view(),name='pay'),
     path('dungeon_go/take/',TakeTreasure.as_view(),name='take'),
     path('dungeon_go/fight/<pk>/',Fight.as_view(),name='fight'),
-    path('dungeon_go/<pk>/bossfight/',BossFight.as_view(),name='bossfight'),
+    path('redirect/<pk>/',BossRedirect.as_view(),name='bossfight'),
+    path('dungeon_go/<pk>/bossfight/',BossFight.as_view(),name='bossfight_st'),
 ] 
