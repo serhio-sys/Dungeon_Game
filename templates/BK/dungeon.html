@@ -8,6 +8,16 @@ Location: Dungeon
 <div class="d-flex m-2 justify-content-center">
     <div>
         <a class="btn btn-info btn-sm navig ms-3" href="{% url 'dungeon_go' %}">Start Advanture</a>
+        {% if user.dungeon_lvl == 1 and user.lvl>=3 %}
+            <div>If you want up your dungeon_lvl you must win in fight with Boss</div>
+            <div class='text-center'><a class="btn btn-warning">Fight with Boss</a><div>
+        {% elif user.dungeon_lvl == 2 and user.lvl>=7 %}
+            <div>If you want up your dungeon_lvl you must win in fight with Boss</div>
+            <div class='text-center'><a class="btn btn-warning">Fight with Boss</a><div>
+        {% elif user.dungeon_lvl == 2 and user.lvl>=7 %}
+            <div>If you want up your dungeon_lvl you must win in fight with Boss</div>
+            <div class='text-center'><a class="btn btn-warning">Fight with Boss</a><div>
+        {% endif %}
     </div>
 </div>
 {% endblock enter %}
@@ -17,6 +27,24 @@ Location: Dungeon
         <span class="text-center fs-3">Locations</span>
         <div class="d-flex justify-content-center gap-2">
             <a class="btn btn-info navig" href="{% url 'loc4' %}">Leave with Dungeon</a>
+            <div class="text-center">Your dungeon_lvl - {{user.dungeon_lvl}}</div>
+            <div class="d-flex flex-wrap">
+               <div> 
+                <div>If dungeon_lvl = 1</div>
+                <div>Tresure - [from 50 to 100]</div>
+                <div>Enemy pay - [from 50 to 100]</div>
+               </div>
+               <div>
+                <div>If dungeon_lvl = 2</div>
+                <div>Tresure - [from 100 to 200]</div>
+                <div>Enemy pay - [from 80 to 150]</div>
+               </div>
+               <div>
+                <div>If dungeon_lvl = 3</div>
+                <div>Tresure - [from 300 to 500]</div>
+                <div>Enemy pay - [from 200 to 400]</div>
+               </div>
+            </div>
         </div>
     </div>
    
