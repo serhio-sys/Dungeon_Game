@@ -340,7 +340,6 @@ class BossFight(LoginRequiredMixin,UserPassesTestMixin,View):
         form_class = AttackF()
         if request.user.is_fight==False:
             request.user.is_fight = True
-            rnd = random.randint(0,1)
             if request.user.dungeon_lvl == 1:
                 enemy = Enemy.objects.create(name="BOSS_lvl_1",health=150,attack=20,defence=17,lvl=98,img="enemy/first.png",slug=request.user.username)
             elif request.user.dungeon_lvl == 2:
@@ -406,7 +405,7 @@ class BossFight(LoginRequiredMixin,UserPassesTestMixin,View):
                 request.user.balance += pay
             elif enemy.lvl == 100:
                 pay = 4150
-                lvl = "Third"
+                lvl = "Final"
                 request.user.balance += pay
             self.request.user.save()
             enemy.delete()
