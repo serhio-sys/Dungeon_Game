@@ -12,7 +12,7 @@ class Newuser(AbstractUser):
     exp = models.IntegerField("EXP",default=0)
     weapon = models.ForeignKey('Weapon',verbose_name="WEAPON",default='',null=True,blank=True,on_delete=models.SET_NULL)
     armor = models.ForeignKey('Armor',verbose_name="ARMOR",default='',null=True,blank=True,on_delete=models.SET_NULL)
-    dungeon_lvl = models.IntegerField("DUNGEON LVL",default=0)
+    dungeon_lvl = models.IntegerField("DUNGEON LVL",default=1)
     dungeon_loc = models.IntegerField("DUNGEON LOCATION", default=0)
     is_fight = models.BooleanField("IS FIGHT",default=False)
     enemy = models.ForeignKey("Enemy",verbose_name="ENEMY",default='',null=True,blank=True,on_delete=models.SET_NULL)

@@ -2,6 +2,7 @@ from django.shortcuts import redirect,render
 from django.views.generic import TemplateView,View
 from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 import random
+from django.http import JsonResponse
 from Game.forms import AttackF
 from User.models import Armor, Enemy, Newuser, Weapon
 
@@ -256,14 +257,14 @@ class Fight(LoginRequiredMixin,UserPassesTestMixin,View):
             request.user.is_fight = True
             allphoto = ['enemy/first.jpg','enemy/second.jpg']
             rnd = random.randint(0,1)
-            if request.user.dungeon_lvl <= 3:
-                enemy = Enemy.objects.create(name="Bad Guy",attack=5,defence=2,lvl=1,img=allphoto[rnd],slug=request.user.username)
-            elif request.user.dungeon_lvl > 3 and request.user.dungeon_lvl <= 9:
-                enemy = Enemy.objects.create(name="Bad Guy_2",attack=10,defence=8,lvl=2,img=allphoto[rnd],slug=request.user.username,weapon=Weapon.objects.get(pk=2),armor=Armor.objects.get(pk=2))
-            elif request.user.dungeon_lvl > 9 and request.user.dungeon_lvl <= 13:
-                enemy = Enemy.objects.create(name="Bad Guy_3",attack=30,defence=25,lvl=3,img=allphoto[rnd],slug=request.user.username,weapon=Weapon.objects.get(pk=4),armor=Armor.objects.get(pk=4))
-            elif request.user.dungeon_lvl > 13:
-                enemy = Enemy.objects.create(name="Bad Guy_4",attack=40,defence=35,lvl=4,img=allphoto[rnd],slug=request.user.username,weapon=Weapon.objects.get(pk=5),armor=Armor.objects.get(pk=5))
+            if request.user.dungeon_lvl == 1:
+                enemy = Enemy.objects.create(name="Bad_Guy_lvl_1",attack=5,defence=2,lvl=1,img=allphoto[rnd],slug=request.user.username)
+            elif request.user.dungeon_lvl == 2:
+                enemy = Enemy.objects.create(name="Bad_Guy_lvl_2",attack=10,defence=8,lvl=2,img=allphoto[rnd],slug=request.user.username,weapon=Weapon.objects.get(pk=2),armor=Armor.objects.get(pk=2))
+            elif request.user.dungeon_lvl == 3:
+                enemy = Enemy.objects.create(name="Bad_Guy_lvl_3",attack=30,defence=25,lvl=3,img=allphoto[rnd],slug=request.user.username,weapon=Weapon.objects.get(pk=4),armor=Armor.objects.get(pk=4))
+            elif request.user.dungeon_lvl == 4:
+                enemy = Enemy.objects.create(name="Bad_Guy_lvl_4",attack=40,defence=35,lvl=4,img=allphoto[rnd],slug=request.user.username,weapon=Weapon.objects.get(pk=5),armor=Armor.objects.get(pk=5))
             request.user.enemy = enemy
             request.user.save()
             return render(request,'BK/fight.html',context={'enemy':enemy,'form':form_class})
@@ -272,9 +273,6 @@ class Fight(LoginRequiredMixin,UserPassesTestMixin,View):
             if request.user.health <= 0:
                 request.user.dungeon_loc = 0
                 request.user.is_fight = False
-                if enemy.health >= 100:
-                    if request.user.dungeon_lvl - 1!=0:
-                        request.user.dungeon_lvl -= 1
                 self.request.user.save()          
                 enemy.delete()
                 return render(request,'BK/lose.html')
@@ -329,9 +327,6 @@ class Fight(LoginRequiredMixin,UserPassesTestMixin,View):
             request.user.health = 0
             request.user.dungeon_loc = 0
             request.user.is_fight = False
-            if enemy.health >= 100:
-                if request.user.dungeon_lvl - 1!=0:
-                    request.user.dungeon_lvl -= 1
             self.request.user.save()
             enemy.delete()
             return render(request,'BK/lose.html')
@@ -345,11 +340,10 @@ class Fight(LoginRequiredMixin,UserPassesTestMixin,View):
                 request.user.balance += random.randint(120,250)
             elif enemy.lvl == 3:
                 request.user.balance += random.randint(220,350)
-            if request.user.health >= 100:
-                request.user.dungeon_lvl += 1
             self.request.user.save()
             enemy.delete()
             return render(request,'BK/win.html')
+        return JsonResponse({'success':True,'msg_at':msg_at,'msg_def':msg_def,'msg_bot_a':msg_enemy_at,'msg_bot_def':msg_enemy_def},status=200)
         return render(request,'BK/fight.html',context={'enemy':enemy,'form':form_class,'msg_at':msg_at,'msg_def':msg_def,'msg_bot_a':msg_enemy_at,'msg_bot_def':msg_enemy_def})
 
 
