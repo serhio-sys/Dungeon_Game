@@ -388,7 +388,6 @@ class BossFight(LoginRequiredMixin,UserPassesTestMixin,View):
             request.user.health = 0
             request.user.dungeon_loc = 0
             request.user.is_fight = False
-            request.user.dungeon_lvl += 1
             self.request.user.save()
             enemy.delete()
             html = render_to_string(request=request,template_name='BK/boss_lose.html')
@@ -396,6 +395,7 @@ class BossFight(LoginRequiredMixin,UserPassesTestMixin,View):
         elif enemy.health <= 0:
             request.user.is_fight = False
             request.user.dungeon_loc = 0
+            request.user.dungeon_lvl += 1
             if enemy.lvl == 98:
                 lvl = "First"
                 pay = 1250
