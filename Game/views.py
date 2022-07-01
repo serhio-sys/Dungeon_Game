@@ -54,7 +54,7 @@ def buyweapon(request,weapon):
         if user.weapon==weapon:
             return render(request,'BK/shop_err.html')
         else:
-            if weapon.lvl<=request.user.lvl:
+            if weapon.lvl<=request.user.lvl and weapon.dun_lvl<=request.user.dungeon_lvl:
                 user.balance -= weapon.balance
                 user.weapon = weapon
                 user.save()
@@ -72,7 +72,7 @@ def buyarmor(request,armor):
         if user.armor==armor:
             return render(request,'BK/shop_err.html')
         else:
-            if armor.lvl<=request.user.lvl:
+            if armor.lvl<=request.user.lvl and armor.dun_lvl<=request.user.dungeon_lvl:
                 user.balance -= armor.balance
                 user.armor = armor
                 user.save()
@@ -221,6 +221,10 @@ class PayBadGuys(LoginRequiredMixin,View):
             pay = random.randint(80,150)
         elif request.user.dungeon_lvl == 3:
             pay = random.randint(200,400)
+        elif request.user.dungeon_lvl == 4:
+            pay = random.randint(300,900)
+        elif request.user.dungeon_lvl == 5:
+            pay = random.randint(1000,1300)
         if self.request.user.balance>=pay:    
             self.request.user.balance -= pay
             self.request.user.dungeon_loc = 0
@@ -240,6 +244,10 @@ class TakeTreasure(LoginRequiredMixin,View):
                 pay = random.randint(100,200)
             elif request.user.dungeon_lvl == 3:
                 pay = random.randint(300,500)
+            elif request.user.dungeon_lvl == 4:
+                pay = random.randint(600,700)
+            elif request.user.dungeon_lvl == 5:
+                pay = random.randint(800,1000)
             request.user.balance += pay
             request.user.exp += random.randint(1,5)
             request.user.dungeon_loc = 0
@@ -261,11 +269,13 @@ class Fight(LoginRequiredMixin,UserPassesTestMixin,View):
             if request.user.dungeon_lvl == 1:
                 enemy = Enemy.objects.create(name="Bad_Guy_lvl_1",attack=5,defence=2,lvl=1,img=allphoto[rnd],slug=request.user.username)
             elif request.user.dungeon_lvl == 2:
-                enemy = Enemy.objects.create(name="Bad_Guy_lvl_2",attack=10,defence=8,lvl=2,img=allphoto[rnd],slug=request.user.username,weapon=Weapon.objects.get(pk=2),armor=Armor.objects.get(pk=2))
+                enemy = Enemy.objects.create(name="Bad_Guy_lvl_2",attack=12,defence=10,lvl=2,img=allphoto[rnd],slug=request.user.username,weapon=Weapon.objects.get(pk=2),armor=Armor.objects.get(pk=2))
             elif request.user.dungeon_lvl == 3:
-                enemy = Enemy.objects.create(name="Bad_Guy_lvl_3",attack=30,defence=25,lvl=3,img=allphoto[rnd],slug=request.user.username,weapon=Weapon.objects.get(pk=4),armor=Armor.objects.get(pk=4))
+                enemy = Enemy.objects.create(name="Bad_Guy_lvl_3",attack=20,defence=21,lvl=3,img=allphoto[rnd],slug=request.user.username,weapon=Weapon.objects.get(pk=4),armor=Armor.objects.get(pk=4))
             elif request.user.dungeon_lvl == 4:
-                enemy = Enemy.objects.create(name="Bad_Guy_lvl_4",attack=40,defence=35,lvl=4,img=allphoto[rnd],slug=request.user.username,weapon=Weapon.objects.get(pk=5),armor=Armor.objects.get(pk=5))
+                enemy = Enemy.objects.create(name="Bad_Guy_lvl_4",attack=37,defence=30,lvl=4,img=allphoto[rnd],slug=request.user.username,weapon=Weapon.objects.get(pk=5),armor=Armor.objects.get(pk=5))
+            elif request.user.dungeon_lvl == 5:
+                enemy = Enemy.objects.create(name="Bad_Guy_lvl_5",attack=47,defence=40,lvl=5,img=allphoto[rnd],slug=request.user.username,weapon=Weapon.objects.get(pk=6),armor=Armor.objects.get(pk=6))
             request.user.enemy = enemy
             request.user.save()
             return render(request,'BK/fight.html',context={'enemy':enemy,'form':form_class})
@@ -321,6 +331,10 @@ class Fight(LoginRequiredMixin,UserPassesTestMixin,View):
                 request.user.balance += random.randint(120,250)
             elif enemy.lvl == 3:
                 request.user.balance += random.randint(220,350)
+            elif enemy.lvl == 4:
+                request.user.balance += random.randint(320,450)
+            elif enemy.lvl == 5:
+                request.user.balance += random.randint(420,1050)
             self.request.user.save()
             enemy.delete()
             html = render_to_string(request=request,template_name='BK/win.html')
@@ -341,11 +355,13 @@ class BossFight(LoginRequiredMixin,UserPassesTestMixin,View):
         if request.user.is_fight==False:
             request.user.is_fight = True
             if request.user.dungeon_lvl == 1:
-                enemy = Enemy.objects.create(name="BOSS_lvl_1",health=150,attack=20,defence=17,lvl=98,img="enemy/first.png",slug=request.user.username)
+                enemy = Enemy.objects.create(name="BOSS_lvl_1",health=100,attack=20,defence=17,lvl=98,img="enemy/boss4.webp",slug=request.user.username)
             elif request.user.dungeon_lvl == 2:
-                enemy = Enemy.objects.create(name="BOSS_lvl_2",attack=45,health=200,defence=36,lvl=99,img="enemy/second.png",slug=request.user.username,weapon=Weapon.objects.get(pk=2),armor=Armor.objects.get(pk=2))
+                enemy = Enemy.objects.create(name="BOSS_lvl_2",attack=35,health=150,defence=26,lvl=99,img="enemy/third.png",slug=request.user.username,weapon=Weapon.objects.get(pk=2),armor=Armor.objects.get(pk=2))
             elif request.user.dungeon_lvl == 3:
-                enemy = Enemy.objects.create(name="BOSS_lvl_3",attack=60,defence=55,health=300,lvl=100,img="enemy/third.png",slug=request.user.username,weapon=Weapon.objects.get(pk=4),armor=Armor.objects.get(pk=4))
+                enemy = Enemy.objects.create(name="BOSS_lvl_3",attack=42,defence=35,health=250,lvl=100,img="enemy/second.png",slug=request.user.username,weapon=Weapon.objects.get(pk=4),armor=Armor.objects.get(pk=4))
+            elif request.user.dungeon_lvl == 4:
+                enemy = Enemy.objects.create(name="FINAL_BOSS",attack=60,defence=55,health=300,lvl=100,img="enemy/first.png",slug=request.user.username,weapon=Weapon.objects.get(pk=5),armor=Armor.objects.get(pk=5))
             request.user.enemy = enemy
             request.user.save()
             return render(request,'BK/boss_fight.html',context={'enemy':enemy,'form':form_class})
@@ -405,6 +421,9 @@ class BossFight(LoginRequiredMixin,UserPassesTestMixin,View):
                 request.user.balance += pay
             elif enemy.lvl == 100:
                 pay = 4150
+                lvl = "Third"
+            elif enemy.lvl == 101:
+                pay = 9150
                 lvl = "Final"
                 request.user.balance += pay
             self.request.user.save()

@@ -30,8 +30,9 @@ class Newuser(AbstractUser):
             return self.defence+self.armor.armor
 
     def CheckEXP(self):
-        if self.lvl == 99:
-            self.exp=100
+        if self.lvl >= 99:
+            self.lvl=99
+            self.exp=99
         else:
             if self.exp>=100:
                 self.lvl+=1
@@ -68,6 +69,7 @@ class Weapon(models.Model):
     img = models.ImageField("IMG",upload_to="weapon")
     balance = models.IntegerField("SUM")
     lvl = models.IntegerField("LVL")
+    dun_lvl = models.IntegerField("DUNGEON LVL")
 
     def get_absolute_url(self):
         return reverse("buy_w", kwargs={"weapon": self.pk})
@@ -83,6 +85,7 @@ class Armor(models.Model):
     armor = models.IntegerField("AROMOR+")
     balance = models.IntegerField("SUM")
     lvl = models.IntegerField("LVL")
+    dun_lvl = models.IntegerField("DUNGEON LVL")
 
     def get_absolute_url(self):
         return reverse("buy_a", kwargs={"armor": self.pk})

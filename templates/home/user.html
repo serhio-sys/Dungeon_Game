@@ -5,7 +5,7 @@
     .item_img{
         width:80px;
         height:80px;
-        object-fit:cover;
+        object-fit:contain;
     }
     .zxc{
         z-index:10;
@@ -45,7 +45,7 @@
     </div>
     <div class="card-body d-flex p-3 shadown">
         <div class='m-3 d-flex flex-column align-items-between'>
-            <div class="img_user"><img src="{% static 'img/based_2.png' %}" class="w-100 h-100" /></div>
+            <div class="img_user"><img src="{% if user.dungeon_lvl == 1 %}{% static 'img/based_2.png' %}{% elif user.dungeon_lvl == 2 %}{% static 'img/based_3.png' %}{% elif user.dungeon_lvl == 3 %}{% static 'img/based_4.png' %}{% elif user.dungeon_lvl == 4 %}{% static 'img/based_5.png' %}{% else %}{% static 'img/based_6.png' %}{% endif %}" class="w-100 h-100" /></div>
             <span>Health: {{user.health}}/100</span>
             <div class="progress mt-1">
                 <div class="progress-bar bg_pr" role="progressbar" style="width: {{user.health}}%" aria-valuenow="{{user.health}}" aria-valuemin="0" aria-valuemax="100">Health: {{user.health}}</div>
@@ -73,7 +73,7 @@
             <div>Your LVL: {{user.CheckEXP}}</div>
             <div class="mt-3">Exp:</div>
             <div class="progress">
-                <div class="progress-bar" role="progressbar" style="width: {{user.exp}}%;" aria-valuenow="{{user.exp}}" aria-valuemin="0" aria-valuemax="100">{{user.exp}}/100</div>
+                <div class="progress-bar" role="progressbar" style="width: {{user.exp}}%;" aria-valuenow="{{user.exp}}" aria-valuemin="0" aria-valuemax="100">{% if user.lvl == 99 %}max{% else %}{{user.exp}}/100{% endif %}</div>
             </div>
             </div>
         </div>

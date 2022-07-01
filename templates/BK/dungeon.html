@@ -13,14 +13,20 @@ Location: Dungeon_LVL {{user.dungeon_lvl}}
                 <a class="btn btn-info" href="{% url 'dungeon_go' %}">Start Advanture</a>
                 <a class="btn btn-warning" href="{{user.get_absolute_url_bossfight}}">Fight with Boss</a>
             <div>
-        {% elif user.dungeon_lvl == 2 and user.lvl >= 10 %}
-            <div>If you want up your dungeon_lvl you must win in fight with Second Boss</div>
+        {% elif user.dungeon_lvl == 2 and user.lvl >= 15 %}
+            <div class="text-center">If you want up your dungeon_lvl you must win in fight with Second Boss</div>
             <div class='text-center d-flex gap-3 m-2 justify-content-center'>
                 <a class="btn btn-info" href="{% url 'dungeon_go' %}">Start Advanture</a>
                 <a class="btn btn-warning" href="{{user.get_absolute_url_bossfight}}">Fight with Boss</a>
             <div>
-        {% elif user.dungeon_lvl == 3 and user.lvl >= 15 %}
-            <div>If you want up your dungeon_lvl you must win in fight with Third Boss</div>
+        {% elif user.dungeon_lvl == 3 and user.lvl >= 25 %}
+            <div class="text-center">If you want up your dungeon_lvl you must win in fight with Third Boss</div>
+            <div class='text-center d-flex gap-3 m-2 justify-content-center'>
+                <a class="btn btn-info" href="{% url 'dungeon_go' %}">Start Advanture</a>
+                <a class="btn btn-warning" href="{{user.get_absolute_url_bossfight}}">Fight with Boss</a>
+            <div>
+        {% elif user.dungeon_lvl == 4 and user.lvl >= 30 %}
+            <div class="text-center">If you want up your dungeon_lvl you must win in fight with Final Boss</div>
             <div class='text-center d-flex gap-3 m-2 justify-content-center'>
                 <a class="btn btn-info " href="{% url 'dungeon_go' %}">Start Advanture</a>
                 <a class="btn btn-warning" href="{{user.get_absolute_url_bossfight}}">Fight with Boss</a>
@@ -40,7 +46,7 @@ Location: Dungeon_LVL {{user.dungeon_lvl}}
         <div class="d-flex justify-content-center flex-column">
             
 <div class="d-flex justify-content-center"><a class="btn btn-info" href="{% url 'loc4' %}">Leave with Dungeon</a></div>
-            <div class="d-flex w-100 mt-4 justify-content-center">
+            <div class="d-flex w-100 mb-2 justify-content-center">
                {% if user.dungeon_lvl == 1 %}
                <div> 
                 <div>Tresure - [from 50 to 100]</div>
@@ -51,10 +57,20 @@ Location: Dungeon_LVL {{user.dungeon_lvl}}
                 <div>Tresure - [from 100 to 200]</div>
                 <div>Enemy pay - [from 80 to 150]</div>
                </div>
-               {% else %}
+               {% elif user.dungeon_lvl == 3 %}
                <div>
                 <div>Tresure - [from 300 to 500]</div>
                 <div>Enemy pay - [from 200 to 400]</div>
+               </div>
+               {% elif user.dungeon_lvl == 4 %}
+               <div>
+                <div>Tresure - [from 600 to 700]</div>
+                <div>Enemy pay - [from 300 to 900]</div>
+               </div>
+               {% else %}
+               <div>
+                <div>Tresure - [from 800 to 1000]</div>
+                <div>Enemy pay - [from 1000 to 1300]</div>
                </div>
               {% endif %}
             </div>
