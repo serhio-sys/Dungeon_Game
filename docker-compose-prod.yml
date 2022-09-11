@@ -10,8 +10,8 @@ services:
     environment:
     - ENVIRONMENT=production
     - DEBUG=0
-    - media:/src/media/
-    - static:/src/static/
+    - media:/code/media/
+    - static:/code/static/
     ports:
     - 8000:8000
     depends_on:
