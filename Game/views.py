@@ -264,7 +264,7 @@ class Fight(LoginRequiredMixin,UserPassesTestMixin,View):
         form_class = AttackF()
         if request.user.is_fight==False and request.user.dungeon_loc==3:
             request.user.is_fight = True
-            allphoto = ['enemy/first','enemy/second_mznzxm']
+            allphoto = ['enemy/first_nz4b2k.jpg','enemy/second_mznzxm.jpg']
             rnd = random.randint(0,1)
             if request.user.dungeon_lvl == 1:
                 enemy = Enemy.objects.create(name="Bad_Guy_lvl_1",attack=5,defence=2,lvl=1,img=allphoto[rnd],slug=request.user.username)
@@ -368,13 +368,13 @@ class BossFight(LoginRequiredMixin,UserPassesTestMixin,View):
         if request.user.is_fight==False and request.user.dungeon_loc==3:
             request.user.is_fight = True
             if request.user.dungeon_lvl == 1:
-                enemy = Enemy.objects.create(name="BOSS_lvl_1",health=100,attack=20,defence=17,lvl=98,img="enemy/boss4",slug=request.user.username)
+                enemy = Enemy.objects.create(name="BOSS_lvl_1",health=100,attack=20,defence=17,lvl=98,img="enemy/boss4_encvkg.webp",slug=request.user.username)
             elif request.user.dungeon_lvl == 2:
-                enemy = Enemy.objects.create(name="BOSS_lvl_2",attack=35,health=150,defence=26,lvl=99,img="enemy/third",slug=request.user.username,weapon=Weapon.objects.get(pk=2),armor=Armor.objects.get(pk=2))
+                enemy = Enemy.objects.create(name="BOSS_lvl_2",attack=35,health=150,defence=26,lvl=99,img="enemy/third_r20nbd.png",slug=request.user.username,weapon=Weapon.objects.get(pk=2),armor=Armor.objects.get(pk=2))
             elif request.user.dungeon_lvl == 3:
-                enemy = Enemy.objects.create(name="BOSS_lvl_3",attack=42,defence=35,health=250,lvl=100,img="enemy/second",slug=request.user.username,weapon=Weapon.objects.get(pk=4),armor=Armor.objects.get(pk=4))
+                enemy = Enemy.objects.create(name="BOSS_lvl_3",attack=42,defence=35,health=250,lvl=100,img="enemy/second_s5iqbt.png",slug=request.user.username,weapon=Weapon.objects.get(pk=4),armor=Armor.objects.get(pk=4))
             elif request.user.dungeon_lvl == 4:
-                enemy = Enemy.objects.create(name="FINAL_BOSS",attack=60,defence=55,health=300,lvl=100,img="enemy/first",slug=request.user.username,weapon=Weapon.objects.get(pk=5),armor=Armor.objects.get(pk=5))
+                enemy = Enemy.objects.create(name="FINAL_BOSS",attack=60,defence=55,health=300,lvl=100,img="enemy/first_ha3ong.png",slug=request.user.username,weapon=Weapon.objects.get(pk=5),armor=Armor.objects.get(pk=5))
             request.user.enemy = enemy
             request.user.save()
             return render(request,'BK/boss_fight.html',context={'enemy':enemy,'form':form_class})
