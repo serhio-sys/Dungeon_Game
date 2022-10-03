@@ -207,8 +207,8 @@
                         <div class="img_user"><img src="{% if user.dungeon_lvl == 1 %}{% static 'img/based_2.png' %}{% elif user.dungeon_lvl == 2 %}{% static 'img/based_3.png' %}{% elif user.dungeon_lvl == 3 %}{% static 'img/based_4.png' %}{% elif user.dungeon_lvl == 4 %}{% static 'img/based_5.png' %}{% else %}{% static 'img/based_6.png' %}{% endif %}" class="w-100 h-100" /></div>
                         <span>Health: {{user.health}}/100</span>
                         <div class="progress mt-1">
-                            <div class="progress-bar bg_pr" role="progressbar" style="width: {{user.health}}%" aria-valuenow="{{user.health}}" aria-valuemin="0" aria-valuemax="100">{% if user.lvl == 99 %}max{% else %}{{user.exp}}/100{% endif %}</div>
-                    </div>
+                            <div class="progress-bar bg_pr" role="progressbar" style="width: {{user.health}}%" aria-valuenow="{{user.health}}" aria-valuemin="0" aria-valuemax="100">{{user.health}}</div>
+                        </div>
                     </div>
                     <div class=" d-flex align-items-center"><div class="qwe fs-1"><</div></div>
                     <div class='m-3'>
